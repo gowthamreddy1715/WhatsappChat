@@ -25,13 +25,23 @@ exports.sendMessage = async (req, res) => {
         }
       }
     );
-
+    db.query(
+      'INSERT INTO orders (customerName,phoneNumber,orderId) VALUES (?, ?, ?)',
+      [name,phone,orderId],
+      (err) => {
+        if (err) console.error('Insert error:', err);
+      }
+    );
+    
     res.status(200).send('Message sent');
+   
+
   } catch (error) {
     console.error(error.response?.data || error.message);
     res.status(500).send('Failed to send message');
   }
 };
+
 
 exports.verifyWebhook = (req, res) => {
   const mode = req.query['hub.mode'];

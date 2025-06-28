@@ -9,7 +9,7 @@ export default function SendMessageForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/send-message', { name, phone, orderId });
+      await axios.post('https://whatsappchat-mb7m.onrender.com/send-message', { name, phone, orderId });
       alert('Message sent!');
     } catch (error) {
       console.error(error.response?.data || error.message);
