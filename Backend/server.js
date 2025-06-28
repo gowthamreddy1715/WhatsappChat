@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const db = require('./db');
+
 const whatsappRoutes = require('./routes/whatsapp');
 
 dotenv.config();

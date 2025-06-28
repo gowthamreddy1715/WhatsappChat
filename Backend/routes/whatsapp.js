@@ -8,6 +8,5 @@ const {
 
 router.post('/send-message', sendMessage);
 router.get('/webhook', verifyWebhook);
-router.post('/webhook', receiveWebhook);
 
 module.exports = router;

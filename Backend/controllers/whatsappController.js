@@ -41,25 +41,3 @@ exports.verifyWebhook = (req, res) => {
   }
 };
 
-exports.receiveWebhook = (req, res) => {
-  const entry = req.body.entry || [];
-  entry.forEach(ent => {
-    const changes = ent.changes || [];
-    changes.forEach(change => {
-      const statuses = change.value.statuses || [];
-      statuses.forEach(status => {
-        const { id: message_id, status: msg_status, timestamp, recipient_id } = status;
-
-        db.query(
-          'INSERT INTO message_logs (message_id, recipient_number, status, timestamp) VALUES (?, ?, ?, ?)',
-          [message_id, recipient_id, msg_status, timestamp],
-          (err) => {
-            if (err) console.error('Insert error:', err);
-          }
-        );
-      });
-    });
-  });
-
-  res.sendStatus(200);
-};
