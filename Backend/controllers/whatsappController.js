@@ -9,11 +9,15 @@ exports.sendMessage = async (req, res) => {
     await axios.post(
       `https://graph.facebook.com/v19.0/${process.env.PHONE_NUMBER_ID}/messages`,
       {
-        messaging_product: 'whatsapp',
-        to: phone,
-        type: 'text',
-        text: { body: message }
+            messaging_product: 'whatsapp',
+            to: phone,
+            type: 'template',
+            template: {
+                name: 'hello_world',
+                language: { code: 'en_US' },
+              }              
       },
+
       {
         headers: {
           Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
