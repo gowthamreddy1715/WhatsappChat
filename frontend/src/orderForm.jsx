@@ -1,60 +1,90 @@
 import { useState } from 'react';
 import axios from 'axios';
+import ViewOrders from './viewOrders';
 
 export default function SendMessageForm() {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('919390122293');
+  const [phone, setPhone] = useState('919014470781');
   const [orderId, setOrderId] = useState('');
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('https://whatsappchat-mb7m.onrender.com/send-message', { name, phone, orderId });
-      alert('Message sent!');
-    } catch (error) {
-      console.error(error.response?.data || error.message);
-      alert('Failed to send message');
-    }
-  };
+  e.preventDefault();
+  const token = localStorage.getItem("token"); 
+
+  try {
+    await axios.post(
+      'http://localhost:5000/send',
+      { name, phone, orderId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    alert('Message sent successfully');
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    alert('Failed to send message');
+  }
+};
+
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 p-4 border rounded shadow">
-      <h2 className="text-xl mb-4 font-semibold">Send WhatsApp Message</h2>
+    <div className="min-h-screen flex items-center justify-center bg-[#ece5dd] px-4">
+      <div className="w-full max-w-md bg-[#ffffff] rounded-lg overflow-hidden shadow-md border border-gray-200">
+        <div className="bg-[#075e54] text-white text-center py-4 text-xl font-semibold">
+          WhatsApp Notification
+        </div>
 
-      <label className="block mb-2">Name:</label>
-      <input
-        type="text"
-        className="w-full p-2 border mb-4"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
+        <form onSubmit={handleSubmit} className="p-6 bg-[#ffffff]">
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 rounded-full bg-[#f0f0f0] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#25d366]"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter name"
+              required
+            />
+          </div>
 
-      <label className="block mb-2">Phone Number:</label>
-      <select
-        className="w-full p-2 border mb-4"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-      >
-        <option value="919390122293">919390122293</option>
-        <option value="919014470781">919014470781</option>
-      </select>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+            <select
+              className="w-full px-4 py-2 rounded-full bg-[#f0f0f0] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#25d366]"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            >
+              <option value="919390122293">919390122293</option>
+              <option value="919014470781">919014470781</option>
+            </select>
+          </div>
 
-      <label className="block mb-2">Order ID:</label>
-      <input
-        type="text"
-        className="w-full p-2 border mb-4"
-        value={orderId}
-        onChange={(e) => setOrderId(e.target.value)}
-        required
-      />
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Order ID</label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 rounded-full bg-[#f0f0f0] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#25d366]"
+              value={orderId}
+              onChange={(e) => setOrderId(e.target.value)}
+              placeholder="Enter order ID"
+              required
+            />
+          </div>
 
-      <button
-        type="submit"
-        className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-      >
-        Send Message
-      </button>
-    </form>
+          <button
+            type="submit"
+            className="w-full bg-[#25d366] text-white font-medium py-2 rounded-full hover:bg-[#128c7e] transition duration-300"
+          >
+            Send Message
+          </button>
+        </form>
+      </div>
+      <ViewOrders />
+      
+    </div>
+    
   );
 }
